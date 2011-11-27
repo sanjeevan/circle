@@ -18,8 +18,8 @@ class homeActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $stories = Doctrine_Query::create()
-      ->select("s.*, fts.*, f.*")
-      ->from("Story s, s.FileToStory fts, fts.File f")
+      ->select("s.*")
+      ->from("Story s")
       ->execute();
     
     $story_section_factory = StorySectionFactory::getInstance(); 
