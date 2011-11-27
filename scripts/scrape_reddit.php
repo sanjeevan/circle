@@ -1,7 +1,9 @@
 #!/usr/bin/php
 <?php
 
-require_once "add_stories.php";
+require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
+$configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'dev', true);
+sfContext::createInstance($configuration);
 
 // simple method to fetch a webpage, and save it to cache
 function fetch_and_cache($url)
@@ -39,9 +41,19 @@ function main()
 
     $title = $item["data"]["title"];
     $url = $item["data"]["url"];
+    
+    $manager = new StoryBuilderManager($url, $title, "reddit");
+    $manager->addBuilder( new ImageOnlyStoryBuilder() );
+    $manager->addBuilder( new DefaultStoryBuilder() );
 
-    echo "Fetching: {$url} \n";
-    add_story_from_url($url, $title);
+    $builder = $manager->getBuilder();
+    $story = $builder->createStoryObject();
+    $configuration = $builder->getMediaDownloaderConfiguration();
+    if ($configuration) {
+      $configuration->setParameter("story", $story);
+      $asset_downloader = new MediaAssetDownloader($configuration);
+      $asset_downloader->execute();
+    }
   }
 }
 
