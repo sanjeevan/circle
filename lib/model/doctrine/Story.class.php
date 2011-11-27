@@ -12,6 +12,24 @@
  */
 class Story extends BaseStory
 {
+  /**
+  * Returns the hostname of the url where this story originated from
+  *
+  * @return string
+  */
+  public function getSourceHost()
+  {
+    $uri = parse_url($this->getUrl());
+    return $uri["host"];
+  }
+
+  /**
+  * Sets the article content from the raw html string. Returns true if content
+  * was able to be extracted, otherwise returns false
+  *
+  * @param string $html
+  * @return boolean
+  */
   public function setReadabilityContentFromHtml($html)
   {
     // load Readability class
@@ -44,6 +62,11 @@ class Story extends BaseStory
     return false;
   }
 
+  /**
+  * Returns the biggest image (area) associated with this story
+  *
+  * @return File
+  */
   public function getBiggestImage()
   {
     $largest = null;
@@ -61,6 +84,11 @@ class Story extends BaseStory
     return $largest;
   }
 
+  /**
+  * Returns the total iamges associated with this story
+  *
+  * @return integer
+  */
   public function getTotalImages()
   {
     $q = Doctrine_Query::create()
@@ -71,6 +99,11 @@ class Story extends BaseStory
     return $q->count();
   }
 
+  /**
+  * Returns all files assoicated with this Story
+  *
+  * @return Doctrine_Collection
+  */
   public function getFiles()
   {
     $q = Doctrine_Query::create()

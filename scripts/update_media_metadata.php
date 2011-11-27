@@ -12,6 +12,13 @@ $files = Doctrine::getTable("File")->findAll();
 $filter_chain = new MediaContentFilterList();
 
 foreach ($files as $file) {
+  if (!is_readable($file->getLocation())) {
+    unlink($file->getLocation());
+    $file->delete();
+    echo "Could not read: {$file->getLocation()}\n";
+    continue;
+  }
+
   $img = new sfImage($file->getLocation(), $file->getMimeType());
 
   $file->setMetaWidth($img->getWidth());
