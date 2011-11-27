@@ -1,0 +1,11 @@
+body {
+  padding-top: 60px;
+}
+
+.default-section h2 {
+  line-height: 28px;
+}
+
+.row {
+  margin: 10px 0 10px 0;
+}

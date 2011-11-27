@@ -1,0 +1,45 @@
+# eclipse project stuff
+.buildpath
+.project
+.settings/
+
+# symfony
+apps/frontend/config/app.yml
+config/databases.yml
+cache/*
+log/*
+plugins/.registry
+web/uploads/*
+web/images/*.psd
+web/sf/*
+web/.htaccess
+web/sitemaps/*.xml
+
+# build settings
+build/build.properties
+
+# one off scripts, temp sql dumps..etc
+scripts/*.sql
+scripts/*.gz
+scripts/test*.php
+scripts/run/*
+
+# misc
+# .*
+RELEASE*
+
+# calendar temp files
+web/calendar/ics/*
+
+# mac stuff..
+.DS_STORE
+.metadata
+
+# Vim
+*.swp
+
+# Machine specific 
+config/databases.yml.v1
+config/databases.yml.v2
+config/databases.yml.v4
+config/databases.yml.other

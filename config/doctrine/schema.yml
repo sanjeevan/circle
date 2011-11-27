@@ -1,0 +1,92 @@
+# story
+Story:
+  actAs:
+    Timestampable: ~
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+  columns:
+    user_id: integer
+    thing_id: integer
+    username: string(255)
+    title: string(255)
+    url: string(255)
+    summary_html: string
+    readability_content: string
+  relations:
+    sfGuardUser:
+      local: user_id
+      foreignType: many
+      onDelete: CASCADE 
+    Thing:
+      local: thing_id
+      type: one
+      foreignType: one
+      onDelete: CASCADE
+
+Vote:
+  actAs: [Timestampable]
+  columns:
+    thing_id: integer
+    user_id: integer
+    type: string(4)
+  relations:
+    Thing:
+      local: thing_id
+      onDelete: CASCADE
+    sfGuardUser:
+      local: user_id
+      onDelete: CASCADE
+      
+Thing:
+  actAs: [Timestampable]
+  columns:
+    hot:
+      type: decimal(15)
+      scale: 7
+    ups: integer(4)
+    downs: integer(4)
+    score: integer(4)
+    is_published: boolean
+
+File:
+  actAs: [Timestampable]
+  columns:
+    filename: string(255)
+    filesize: integer
+    extension: string(25)
+    mimetype: string(255)
+    location: string(255)
+    meta_width: integer(4)
+    meta_height: integer(4)
+    hash: string(32)
+    source: string(25)
+
+
+FileToUrl:
+  actAs: [Timestampable]
+  columns:
+    file_id: integer
+    url: string
+  relations:
+    File:
+      local: file_id
+      onDelete: CASCADE
+
+FileToStory:
+  actAs: [Timestampable]
+  columns:
+    file_id: integer
+    story_id: integer
+    is_published: { type: boolean, default: 0 }
+  relations:
+    File:
+      local: file_id
+      foreign: id
+      onDelete: CASCADE
+    Story:
+      local: story_id
+      foreign: id
+      onDelete: CASCADE
+ 
