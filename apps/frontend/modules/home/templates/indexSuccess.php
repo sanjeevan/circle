@@ -10,7 +10,7 @@
 </div>
 
 
-<div class="container">
+<div class="container stories-container">
   <?php $idx = 1; ?>
   <?php foreach ($sections as $section): ?>
     

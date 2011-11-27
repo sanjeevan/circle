@@ -2,7 +2,7 @@
 
 class DefaultStorySection extends BaseStorySection
 {
-  protected function analyze()
+  public function getScore()
   {
     $score = 0;
 
@@ -26,10 +26,5 @@ class DefaultStorySection extends BaseStorySection
 
     $partial = $this->getPartial("section/default", $params);
     return $partial;
-  }
-
-  public function getScore()
-  {
-    return $this->analyze();
   }
 }

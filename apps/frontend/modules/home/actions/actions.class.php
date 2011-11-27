@@ -20,6 +20,7 @@ class homeActions extends sfActions
     $stories = Doctrine_Query::create()
       ->select("s.*")
       ->from("Story s")
+      ->orderBy("s.created_at DESC")
       ->execute();
     
     $story_section_factory = StorySectionFactory::getInstance(); 

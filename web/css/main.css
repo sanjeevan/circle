@@ -1,11 +1,20 @@
+
+@font-face {
+  font-family: HelveticaCondensedBold;
+  src: url('/fonts/HelveticaCondensedBold.ttf');
+}
+
 body {
   padding-top: 60px;
 }
 
 .default-section h2 {
   line-height: 28px;
+  font-family: HelveticaCondensedBold, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.row {
-  margin: 10px 0 10px 0;
+.stories-container .row {
+  padding: 0 0 20px 0;
+  margin: 10px 0 20px 0;
+  border-bottom: 1px solid #333;
 }
