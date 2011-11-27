@@ -12,8 +12,11 @@ Story:
     username: string(255)
     title: string(255)
     url: string(255)
+    host: string(100)
+    via: string(100)
     summary_html: string
     readability_content: string
+    flavour: { type: enum, values: [article, video, image], default: article }
   relations:
     sfGuardUser:
       local: user_id

@@ -94,10 +94,12 @@ function add_story_from_url($url, $title = null)
 
       $story->setReadabilityContentFromHtml($response->getBody());
       $story->save();
+
+      return $story;
     }
 
   } catch (Exception $e) {
-    print $e->getMessage();
+    print $e->getMessage() . "\n";
   }
 }
 

@@ -8,7 +8,7 @@ sfContext::createInstance($configuration);
 require_once sfConfig::get("sf_root_dir") . '/vendor/htmlpurifier/library/HTMLPurifier.auto.php';
 
 $config = HTMLPurifier_Config::createDefault();
-$config->set("HTML.ForbiddenElements", array("img"));
+$config->set("HTML.ForbiddenElements", array("img", "h1", "h2", "h3", "h4", "a"));
 
 $purifier = new HTMLPurifier($config);
 

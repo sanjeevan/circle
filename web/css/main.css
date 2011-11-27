@@ -8,9 +8,19 @@ body {
   padding-top: 60px;
 }
 
+.default-section {
+  overflow: hidden;
+}
+
 .default-section h2 {
   line-height: 28px;
   font-family: HelveticaCondensedBold, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.default-section .source {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 .stories-container .row {

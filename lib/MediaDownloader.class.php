@@ -22,8 +22,8 @@ class MediaDownloader
 
   public function __construct(Story $story = null)
   {
-    if (!class_exists('HTTP_Request')){
-      require_once('HTTP/Request.php');
+    if (!class_exists('HTTP_Request2')){
+      require_once('HTTP/Request2.php');
     }
 
     $this->story = $story;
@@ -134,16 +134,13 @@ class MediaDownloader
    * @param string $url
    * @return string
    */
-  private function getUrl($url)
+  private function getUrl($url, $method = HTTP_Request2::METHOD_GET)
   {
-    $req = @new HTTP_Request($url);
-    $req->setMethod(HTTP_REQUEST_METHOD_GET);
-    $req->addHeader('User-Agent', $this->user_agent_string);
-    $req->sendRequest();
+    $request = new HTTP_Request2($url, $method);
+    $request->setHeader("User-Agent", $this->user_agent_string);
+    $response = $request->send();
 
-    $html = $req->getResponseBody();
-    unset($req);
-    return $html;
+    return $response->getBody();
   }
   
   /**
@@ -156,10 +153,15 @@ class MediaDownloader
     return $this->html;
   }
 
+  /**
+  * Download all images present in the story url
+  * 
+  * @return void
+  */
   public function execute()
   {
     $this->current_page_url = $this->story->getUrl();
-    $this->html = @$this->getUrl($this->current_page_url);
+    $this->html = $this->getUrl($this->current_page_url);
     $image_urls = $this->getPageImageUrls($this->html);
 
     if (count($image_urls) == 0) {
@@ -179,6 +181,12 @@ class MediaDownloader
     $this->rolling_curl->execute();
   }
 
+  /**
+  * This is a callback, that is run when an image is downloaded
+  *
+  * @param array $response
+  * @param array $info
+  */
   public function onDownloadComplete($response, $info)
   {
     $location = $this->saveToDisk($info, $response);
@@ -208,6 +216,13 @@ class MediaDownloader
     $file_to_url->save();
   }
 
+  /**
+  * Save response from server to disk
+  *
+  * @param array $info
+  * @param array $response
+  * @return string
+  */
   public function saveToDisk($info, $response)
   {
     $http_code = $info['http_code'];

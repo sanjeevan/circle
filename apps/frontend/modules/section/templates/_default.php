@@ -1,7 +1,7 @@
 <div class="story default-section">
   <h2><?php echo $story->getTitle(); ?></h2>
   <div class="source">
-    From: <a target="_blank" href="<?php echo $story->getUrl(); ?>"><?php $story->getSourceHost(); ?></a>
+    <span class="label">Source:</span> <a target="_blank" href="<?php echo $story->getUrl(); ?>"><?php echo $story->getSourceHost(); ?></a>
   </div>
   <div class="summary">
     <?php echo truncate_html_text($story->getSummaryHtml(), 450, '...', true, true); ?>

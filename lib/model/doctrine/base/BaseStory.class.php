@@ -10,8 +10,11 @@
  * @property string $username
  * @property string $title
  * @property string $url
+ * @property string $host
+ * @property string $via
  * @property string $summary_html
  * @property string $readability_content
+ * @property enum $flavour
  * @property sfGuardUser $sfGuardUser
  * @property Thing $Thing
  * @property Doctrine_Collection $FileToStory
@@ -21,8 +24,11 @@
  * @method string              getUsername()            Returns the current record's "username" value
  * @method string              getTitle()               Returns the current record's "title" value
  * @method string              getUrl()                 Returns the current record's "url" value
+ * @method string              getHost()                Returns the current record's "host" value
+ * @method string              getVia()                 Returns the current record's "via" value
  * @method string              getSummaryHtml()         Returns the current record's "summary_html" value
  * @method string              getReadabilityContent()  Returns the current record's "readability_content" value
+ * @method enum                getFlavour()             Returns the current record's "flavour" value
  * @method sfGuardUser         getSfGuardUser()         Returns the current record's "sfGuardUser" value
  * @method Thing               getThing()               Returns the current record's "Thing" value
  * @method Doctrine_Collection getFileToStory()         Returns the current record's "FileToStory" collection
@@ -31,8 +37,11 @@
  * @method Story               setUsername()            Sets the current record's "username" value
  * @method Story               setTitle()               Sets the current record's "title" value
  * @method Story               setUrl()                 Sets the current record's "url" value
+ * @method Story               setHost()                Sets the current record's "host" value
+ * @method Story               setVia()                 Sets the current record's "via" value
  * @method Story               setSummaryHtml()         Sets the current record's "summary_html" value
  * @method Story               setReadabilityContent()  Sets the current record's "readability_content" value
+ * @method Story               setFlavour()             Sets the current record's "flavour" value
  * @method Story               setSfGuardUser()         Sets the current record's "sfGuardUser" value
  * @method Story               setThing()               Sets the current record's "Thing" value
  * @method Story               setFileToStory()         Sets the current record's "FileToStory" collection
@@ -65,11 +74,29 @@ abstract class BaseStory extends sfDoctrineRecord
              'type' => 'string',
              'length' => 255,
              ));
+        $this->hasColumn('host', 'string', 100, array(
+             'type' => 'string',
+             'length' => 100,
+             ));
+        $this->hasColumn('via', 'string', 100, array(
+             'type' => 'string',
+             'length' => 100,
+             ));
         $this->hasColumn('summary_html', 'string', null, array(
              'type' => 'string',
              ));
         $this->hasColumn('readability_content', 'string', null, array(
              'type' => 'string',
+             ));
+        $this->hasColumn('flavour', 'enum', null, array(
+             'type' => 'enum',
+             'values' => 
+             array(
+              0 => 'article',
+              1 => 'video',
+              2 => 'image',
+             ),
+             'default' => 'article',
              ));
     }
 
