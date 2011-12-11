@@ -18,7 +18,9 @@ class StorySectionFactory
   {
     $this->sections = array(
       new DefaultStorySection(),
-      new FeaturedStorySection()
+      new FeaturedStorySection(),
+      new NoImageStorySection(),
+      new ImageOnlyStorySection()
     );
   }
 

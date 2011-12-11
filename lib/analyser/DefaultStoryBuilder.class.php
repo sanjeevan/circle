@@ -54,7 +54,7 @@ class DefaultStoryBuilder extends StoryBuilder
 
     if ($score == 0) {
       echo "{$url}, Score: {$score}\n";
-      echo $body;
+      //echo $body;
     }
 
     return $score;
@@ -94,7 +94,8 @@ class DefaultStoryBuilder extends StoryBuilder
     $config = new MediaDownloaderConfiguration();
     $config->setParameter("urls", $image_urls);
     $config->setParameter("postFilters", array(
-      new MediaImageSizeFilter(), 
+      new MediaImageSizeFilter(),
+      new MediaKeywordsFilter()
     ));
 
     return $config;

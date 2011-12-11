@@ -69,10 +69,27 @@ class fileActions extends sfActions
           $thumb = new sfThumbnail($w, $h, true, true, 100, 'sfImageMagickAdapter', $options);
           break;
       }
-            
-      $thumb->loadFile($file->getLocation());
+
+      $is_animated = false;
+      $filepath =  $file->getLocation();
+      if (ImageUtil::isAnimated($filepath)) {
+        $is_animated = true;
+        $filepath = tempnam("/tmp", "animated-thumb");
+        $seq = new Imagick($file->getLocation());
+        foreach ($seq as $frame) {
+          $frame->writeImage($filepath);
+          break;
+        }
+        $seq->destroy();
+      }
+
+      $thumb->loadFile($filepath);
       $thumb->save($savefile, 'image/png');
       
+      if ($is_animated) {
+        unlink($filepath);
+      }
+
       header('Content-type: image/png');
       readfile($savefile);
       exit(0);

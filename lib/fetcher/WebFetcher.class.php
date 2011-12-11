@@ -21,7 +21,9 @@ class WebFetcher
     $this->request = new HTTP_Request2();
     $this->request->setAdapter('HTTP_Request2_Adapter_Curl');
     $this->request->setConfig(array(
-      "follow_redirects" => true
+      "follow_redirects"  => true,
+      "ssl_verify_peer"   => false,
+      "ssl_verify_host"   => false
     ));
 
     $this->request->setHeader("User-Agent", $this->ua);

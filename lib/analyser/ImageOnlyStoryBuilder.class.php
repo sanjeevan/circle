@@ -18,6 +18,7 @@ class ImageOnlyStoryBuilder extends StoryBuilder
   public function getScore()
   {
     $mime_type = $this->getParameter(self::MIME_TYPE);
+    echo "mimetype: {$mime_type} \n";
     if (in_array($mime_type, $this->mime_types)) {
       return 100;
     }
@@ -55,6 +56,12 @@ class ImageOnlyStoryBuilder extends StoryBuilder
     $file->setMimetype(myUtil::getMimeType($location));
     $file->setHash(sha1_file($location));
     $file->useTempFile($location, false);
+
+    // Set image meta information
+    $img = new sfImage($file->getLocation(), $file->getMimeType());
+    $file->setMetaWidth($img->getWidth());
+    $file->setMetaHeight($img->getHeight());
+
     $file->save();
 
     $fts = new FileToStory();
@@ -64,7 +71,7 @@ class ImageOnlyStoryBuilder extends StoryBuilder
 
     $file_to_url = new FileToUrl();
     $file_to_url->setFile($file);
-    $file_to_url->setUrl($url);
+    $file_to_url->setUrl($this->getParameter(self::URL));
     $file_to_url->save();
     
     return $story;

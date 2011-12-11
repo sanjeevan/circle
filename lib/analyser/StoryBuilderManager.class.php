@@ -6,6 +6,7 @@ class StoryBuilderManager
   protected $uri;
   protected $title;
   protected $via;
+  protected $logger;
 
   protected $builders = array();
 
@@ -15,6 +16,7 @@ class StoryBuilderManager
     $this->title = $title;
     $this->via = $via;
     $this->uri = parse_url($url);
+    $this->logger = ProjectConfiguration::getAppLogger();
   }
 
   /**
@@ -50,7 +52,14 @@ class StoryBuilderManager
     $fetcher->useCache(true);
     $fetcher->setCacheTimeout(3600);
 
-    $response = $fetcher->send();
+    try {
+      $response = $fetcher->send();
+    } catch (Exception $e) {
+      $klass = get_class($e);
+      $this->logger->logError("{$klass} Error fetching resource {$this->url}");
+      $this->logger->logError($e->getMessage());
+      return false;
+    }
     
     // if response if ok
     if ($response->getStatus() == 200) {
@@ -60,6 +69,7 @@ class StoryBuilderManager
     $mime_type = $this->getMimeType($response);
 
     if (count($this->builders) == 0) {
+      $this->logger->logWarn("No builders for {$this->url}");
       throw new Exception("No builders to choose from");
     }
     
@@ -99,10 +109,12 @@ class StoryBuilderManager
   protected function getMimeType($response)
   {
     $mime_type = "unknown";
-    $header = $response->getHeader("content-type");
+    $header = trim($response->getHeader("content-type"));
     if (strpos(";", $header)) {
       $parts = explode(";", $header);
       $mime_type = trim($parts[0]);
+    } else {
+      $mime_type = $header;
     }
     return $mime_type;
   }

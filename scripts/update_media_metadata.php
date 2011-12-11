@@ -9,7 +9,10 @@ $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', '
 sfContext::createInstance($configuration);
 
 $files = Doctrine::getTable("File")->findAll();
-$filter_chain = new MediaContentFilterList();
+$filters = array(
+  new MediaKeywordsFilter(),
+);
+
 
 foreach ($files as $file) {
   if (!is_readable($file->getLocation())) {
@@ -19,19 +22,20 @@ foreach ($files as $file) {
     continue;
   }
 
-  $img = new sfImage($file->getLocation(), $file->getMimeType());
+  // Set image meta information
+  if ($file->getMetaWidth() == null) {
+    $img = new sfImage($file->getLocation(), $file->getMimeType());
+    $file->setMetaWidth($img->getWidth());
+    $file->setMetaHeight($img->getHeight());
+    $file->save();
+  }
 
-  $file->setMetaWidth($img->getWidth());
-  $file->setMetaHeight($img->getHeight());
-  $file->save();
-  
-  $filter_chain->setFile($file);
-
-  if (!$filter_chain->isNeeded()) {
-    $file->delete();    
-    echo "removed {$file->getFilename()} \n";
-  } else {
-    echo "updated {$file->getFilename()} \n";
+  foreach ($filters as $filter) {
+    if (!$filter->canKeep($file)) {
+      $klass = get_class($filter);
+      echo "removing file {$file->getFilename()} [{$klass}] \n";
+      $file->delete();
+    }
   }
 }
 

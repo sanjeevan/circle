@@ -9,7 +9,7 @@
   <div class="photos">
     <?php $image = $story->getBiggestImage(); ?>
     <?php if ($image): ?>
-      <img src="<?php echo $story->getBiggestImage()->getThumbnailUrl(280, 280, "adaptive"); ?>" />
+      <img src="<?php echo $story->getBiggestImage()->getThumbnailUrl(280, 280, "normal"); ?>" />
     <?php endif; ?>
   </div>
 </div>

@@ -28,3 +28,11 @@ body {
   margin: 10px 0 20px 0;
   border-bottom: 1px solid #333;
 }
+
+.no-image {
+  
+}
+
+.image-only {
+  border: 1px solid #ccc;
+}

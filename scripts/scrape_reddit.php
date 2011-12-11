@@ -28,7 +28,7 @@ function fetch_and_cache($url)
 
 function main()
 {
-  $url = "http://www.reddit.com/r/technology/.json";
+  $url = "http://www.reddit.com/r/pics/.json";
   $result = fetch_and_cache($url);
 
   $body = json_decode($result, true);
@@ -41,12 +41,28 @@ function main()
 
     $title = $item["data"]["title"];
     $url = $item["data"]["url"];
-    
+
+    $story = Doctrine::getTable("Story")->findOneByUrl($url);
+    if ($story) {
+      echo "Skipping {$story} [exists] \n";
+      continue;
+    }
+
     $manager = new StoryBuilderManager($url, $title, "reddit");
     $manager->addBuilder( new ImageOnlyStoryBuilder() );
     $manager->addBuilder( new DefaultStoryBuilder() );
 
-    $builder = $manager->getBuilder();
+    try {
+      $builder = $manager->getBuilder();
+      if (!$builder) {
+        echo "Error creating builder for {$url}. See error log\n";
+        continue;
+      }
+    } catch (Exception $e) {
+      echo $e->getMessage();
+      continue;
+    }
+
     $story = $builder->createStoryObject();
     $configuration = $builder->getMediaDownloaderConfiguration();
     if ($configuration) {

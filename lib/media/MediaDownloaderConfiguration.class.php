@@ -6,7 +6,8 @@ class MediaDownloaderConfiguration extends ParameterHolder
   {
     $this->setParameter("urls", array());
     $this->setParameter("postFilters", array(
-      new MediaImageSizeFilter() 
+      new MediaImageSizeFilter(),
+      new MediaKeywordsFilter()
     ));
   }
 }

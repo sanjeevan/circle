@@ -23,6 +23,7 @@ scripts/*.sql
 scripts/*.gz
 scripts/test*.php
 scripts/run/*
+scripts/cache/*
 
 # misc
 # .*
