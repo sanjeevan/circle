@@ -18,10 +18,10 @@ class homeActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $stories = Doctrine_Query::create()
-      ->select("s.*")
-      ->from("Story s")
+      ->select("s.*, fts.*, f.*")
+      ->from("Story s, s.FileToStory fts, fts.File f")
       ->orderBy("s.created_at DESC")
-      ->limit(25)
+      ->limit(36)
       ->execute();
     
     $story_section_factory = StorySectionFactory::getInstance(); 
@@ -35,6 +35,9 @@ class homeActions extends sfActions
       }  
     }
 
-    $this->sections = $sections;
+    //$layout_factory = new PageLayoutFactory($sections);
+    //$page_layout = $layout_factory->getBestLayout();
+    $page_layout = new MasonLayout($sections);
+    $this->page_content = $page_layout->getContent();
   }
 }

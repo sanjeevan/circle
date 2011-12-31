@@ -26,13 +26,14 @@ class NoImageStorySection extends BaseStorySection
     return 10;
   }
 
-  public function getHtmlFragment()
+  public function getHtmlFragment($template = null)
   {
+    $template = $template ? $template : "section/no_image";
     $params = array(
       "story" => $this->story
     );
 
-    $partial = $this->getPartial("section/no_image", $params);
+    $partial = $this->getPartial($template, $params);
     return $partial;
   }
 }

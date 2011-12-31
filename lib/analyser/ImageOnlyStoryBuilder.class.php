@@ -18,7 +18,6 @@ class ImageOnlyStoryBuilder extends StoryBuilder
   public function getScore()
   {
     $mime_type = $this->getParameter(self::MIME_TYPE);
-    echo "mimetype: {$mime_type} \n";
     if (in_array($mime_type, $this->mime_types)) {
       return 100;
     }

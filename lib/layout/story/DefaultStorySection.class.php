@@ -17,14 +17,15 @@ class DefaultStorySection extends BaseStorySection
     return $score;
   }
 
-  public function getHtmlFragment()
+  public function getHtmlFragment($template = null)
   {
+    $template = $template ? $template : "section/default";
     $params = array(
       "images"  => $this->story->getFiles(),
       "story"   => $this->story
     );
 
-    $partial = $this->getPartial("section/default", $params);
+    $partial = $this->getPartial($template, $params);
     return $partial;
   }
 }

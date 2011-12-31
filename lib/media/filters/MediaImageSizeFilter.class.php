@@ -30,8 +30,8 @@ class MediaImageSizeFilter extends MediaFilter
 
   public function canKeep(File $file)
   {
-    // don't keep files smaller than 32px
-    if ($file->getMetaWidth() <= 32) {
+    // don't keep files smaller than 48px
+    if ($file->getMetaWidth() <= 100) {
       return false;
     }
 

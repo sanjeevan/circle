@@ -11,6 +11,7 @@ sfContext::createInstance($configuration);
 $files = Doctrine::getTable("File")->findAll();
 $filters = array(
   new MediaKeywordsFilter(),
+  new MediaImageSizeFilter()
 );
 
 

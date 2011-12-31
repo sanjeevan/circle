@@ -6,18 +6,55 @@
 
 body {
   padding-top: 60px;
+  background-color: #efefef;
 }
 
-.default-section {
-  overflow: hidden;
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
 
-.default-section h2 {
-  line-height: 28px;
-  font-family: HelveticaCondensedBold, "Helvetica Neue", Helvetica, Arial, sans-serif;
+.story {
+  padding: 10px;
+  margin: 0 0 20px 0;
 }
 
-.default-section .source {
+.story img {
+  border: 1px solid #ccc;
+}
+
+.story h2 {
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 26px;
+  font-family: adelle, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-bottom: 5px;
+}
+
+.story h2 a:hover {
+  text-decoration: none;
+}
+
+.story .foot {
+  font-size: 10px;
+  color: #333;
+}
+
+.mason-container .story {
+  float: left;
+  padding: 5px;
+  margin: 5px 5px 10px 5px;
+  border: 1px solid #ddd;
+  background-color: #fefefe;
+  /*border-radius: 5px;*/
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
+}
+
+.source {
   font-size: 14px;
   font-weight: bold;
   margin: 5px 0;
@@ -29,10 +66,26 @@ body {
   border-bottom: 1px solid #333;
 }
 
-.no-image {
-  
+/* == sections == */
+
+/* default */
+.default-section {
+  overflow: hidden;
+  width: 280px;
 }
 
-.image-only {
-  border: 1px solid #ccc;
+/* stories with no images */
+.no-image-section {
+  width: 280px;
 }
+
+/* image only stories */
+.image-section {
+  width: 280px;
+}
+
+/* wide section */
+.wide-section {
+  width: 580px; 
+}
+

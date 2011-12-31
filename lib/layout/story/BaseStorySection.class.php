@@ -20,6 +20,16 @@ abstract class BaseStorySection
 
     $this->sf_context->getConfiguration()->loadHelpers($helpers);
   }
+  
+  /**
+  * Get this object's class name
+  *
+  * @return string
+  */
+  public function getClassName()
+  {
+    return get_class($this);
+  }
 
   /**
   * Get story object
@@ -87,7 +97,7 @@ abstract class BaseStorySection
   *
   * @return string
   */
-  public abstract function getHtmlFragment();
+  public abstract function getHtmlFragment($template = null);
 
   /**
   * Returns a score which indicates whether this Section is appropiate for

@@ -28,7 +28,7 @@ function fetch_and_cache($url)
 
 function main()
 {
-  $url = "http://www.reddit.com/r/pics/.json";
+  $url = "http://www.reddit.com/.json";
   $result = fetch_and_cache($url);
 
   $body = json_decode($result, true);
