@@ -5,53 +5,29 @@ require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
 $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'dev', true);
 sfContext::createInstance($configuration);
 
-// simple method to fetch a webpage, and save it to cache
-function fetch_and_cache($url)
+function process_item_list($items = array(), $via = "rss")
 {
-  $cache_dir = sfConfig::get("sf_root_dir") . "/scripts/cache/";
-  if (!is_dir($cache_dir)) {
-    mkdir($cache_dir);
-  }
+  $stories = array();
 
-  $filename = $cache_dir . md5($url) . ".cache";
-  if (is_readable($filename)) {
-    return file_get_contents($filename);
-  }
-
-  $content = file_get_contents($url);
-  $fp = fopen($filename, "w+");
-  fwrite($fp, $content);
-  fclose($fp);
-  
-  return $content;
-}
-
-function main()
-{
-  $url = "http://www.reddit.com/.json";
-  $result = fetch_and_cache($url);
-
-  $body = json_decode($result, true);
-
-  foreach ($body["data"]["children"] as $item) {
-    $self_text = $item["data"]["selftext_html"];
-    if ($self_text != null) {
-      continue;
-    }
-
-    $title = $item["data"]["title"];
-    $url = $item["data"]["url"];
-
+  foreach ($items as $item) {
+    $title = $item['title'];
+    $url = $item['url'];
+    
+    // Don't process a duplicate story
     $story = Doctrine::getTable("Story")->findOneByUrl($url);
     if ($story) {
       echo "Skipping {$story} [exists] \n";
       continue;
+    } else {
+      echo "Processing {$url} \n";
     }
 
-    $manager = new StoryBuilderManager($url, $title, "reddit");
+    // Setup the story manager
+    $manager = new StoryBuilderManager($url, $title, $via);
     $manager->addBuilder( new ImageOnlyStoryBuilder() );
     $manager->addBuilder( new DefaultStoryBuilder() );
-
+    
+    // Try creating a story from this rss item
     try {
       $builder = $manager->getBuilder();
       if (!$builder) {
@@ -65,6 +41,7 @@ function main()
       continue;
     }
 
+    // Download any additional assets for this story
     $story = $builder->createStoryObject();
     $configuration = $builder->getMediaDownloaderConfiguration();
     if ($configuration) {
@@ -72,7 +49,28 @@ function main()
       $asset_downloader = new MediaAssetDownloader($configuration);
       $asset_downloader->execute();
     }
+    $stories[] = $story;
   }
+}
+
+function main()
+{ 
+  $items = array();
+  $feed = "http://news.ycombinator.com/rss";
+
+  $xml = file_get_contents($feed);
+  $dom = simplexml_load_string($xml);
+
+  $nodes = $dom->xpath("//item");
+  
+  foreach ($nodes as $node) {
+    $title = (string) $node->title;
+    $url = (string) $node->link;
+    echo "Added {$title} \n";
+    $items[] = array("title" => $title, "url" => $url);
+  }
+
+  $stories = process_item_list($items, "hackernews");
 }
 
 main();

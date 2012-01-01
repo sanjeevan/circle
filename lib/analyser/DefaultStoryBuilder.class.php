@@ -51,11 +51,12 @@ class DefaultStoryBuilder extends StoryBuilder
         $score += 20;
       }
     }
-
+    /*
     if ($score == 0) {
       echo "{$url}, Score: {$score}\n";
       //echo $body;
     }
+    */
 
     return $score;
   }

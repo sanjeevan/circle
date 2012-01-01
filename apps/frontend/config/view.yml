@@ -6,7 +6,7 @@ default:
     content-type: text/html
 
   metas:
-    #title:        symfony project
+    title:        Circle
     #description:  symfony project
     #keywords:     symfony, project
     #language:     en
@@ -14,7 +14,15 @@ default:
 
   stylesheets:    [bootstrap/bootstrap.css, fonts.css, main.css]
 
-  javascripts:    [jquery-1.7.1.min.js, jquery.masonry.min.js]
+  javascripts:
+    - vendor/jquery-1.7.1.min.js
+    - vendor/jquery.tmpl.min.js
+    - vendor/jquery.masonry.min.js
+    - vendor/underscore-min.js
+    - vendor/backbone-min.js
+    - application.js
+    - app/views/AddSourceView.js
+    - js-templates.php
 
   has_layout:     true
   layout:         layout

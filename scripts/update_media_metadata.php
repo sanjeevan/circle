@@ -34,7 +34,7 @@ foreach ($files as $file) {
   foreach ($filters as $filter) {
     if (!$filter->canKeep($file)) {
       $klass = get_class($filter);
-      echo "removing file {$file->getFilename()} [{$klass}] \n";
+      echo "[{$klass}] Removed: {$file->getFilename()} \n";
       $file->delete();
     }
   }
